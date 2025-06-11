@@ -3,52 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Resultado do Teste de Prosperidade</title>
+    <title id="pageTitle">Resultado do Teste de Prosperidade</title>
     
-    <!-- Meta Tags para SEO e Compartilhamento -->
-    <meta name="description" content="Descubra sua energia predominante e o caminho para a prosperidade plena" id="meta-description">
-    <meta name="keywords" content="teste prosperidade, energia, crescimento pessoal, suellen seragi">
-    <meta name="author" content="Suellen Seragi">
+    <!-- Meta Tags -->
+    <meta name="description" id="pageDescription" content="Descubra sua energia predominante no Teste de Prosperidade">
+    <meta property="og:title" id="ogTitle" content="Resultado do Teste de Prosperidade">
+    <meta property="og:description" id="ogDescription" content="Descubra sua energia predominante">
+    <meta property="og:image" content="https://raw.githubusercontent.com/renatoambrosi/quizresultado/main/assets/images/Logo%20Suellen.png">
     
-    <!-- Open Graph para Compartilhamento -->
-    <meta property="og:title" content="Resultado do Teste de Prosperidade" id="og-title">
-    <meta property="og:description" content="Descubra sua energia predominante e o caminho para a prosperidade plena" id="og-description">
-    <meta property="og:image" content="https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Teste%20Prosperidade%20Header.jpg" id="og-image">
-    <meta property="og:url" content="" id="og-url">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Suellen Seragi">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Resultado do Teste de Prosperidade" id="twitter-title">
-    <meta name="twitter:description" content="Descubra sua energia predominante e o caminho para a prosperidade plena" id="twitter-description">
-    <meta name="twitter:image" content="https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Teste%20Prosperidade%20Header.jpg">
-    
-    <!-- Fonts e Ícones -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Logo%20Suellen.png">
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
-        :root {
-            --primary-color: #8B4513;
-            --secondary-color: #D2691E;
-            --accent-color: #228B22;
-            --text-dark: #2C1810;
-            --text-light: #6B4423;
-            --background-light: #FFF8DC;
-            --background-white: #FFFFFF;
-            --border-light: #E5D4B1;
-            --shadow-light: rgba(139, 69, 19, 0.1);
-            --shadow-medium: rgba(139, 69, 19, 0.2);
-            --gradient-primary: linear-gradient(135deg, #8B4513, #D2691E);
-            --gradient-secondary: linear-gradient(135deg, #228B22, #32CD32);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -56,19 +22,14 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: var(--text-dark);
-            background: var(--background-light);
-            background-image: url('https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Suellen%20Fundo.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            overflow-x: hidden;
+            color: #333;
+            min-height: 100vh;
             position: relative;
         }
 
+        /* Fundo da página com transparência */
         body::before {
             content: '';
             position: fixed;
@@ -76,460 +37,278 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 248, 220, 0.85);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 20px 0 40px;
-            background: var(--background-white);
-            background-image: url('https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Teste%20Prosperidade%20Header.jpg');
+            background-image: url('https://raw.githubusercontent.com/renatoambrosi/quizresultado/main/assets/images/Suellen%20fundo.png');
             background-size: cover;
             background-position: center;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px var(--shadow-light);
-            position: relative;
-            overflow: hidden;
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.3;
+            z-index: -2;
         }
 
-        .header::before {
+        /* Overlay para melhorar legibilidade */
+        body::after {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(139, 69, 19, 0.8), rgba(210, 105, 30, 0.6));
-            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: -1;
         }
 
-        .header > * {
+        /* Header com imagem do GitHub */
+        .header {
+            background-image: url('https://raw.githubusercontent.com/renatoambrosi/quizresultado/main/assets/images/Teste%20Prosperidade%20Header.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 30px 0;
+            text-align: center;
             position: relative;
-            z-index: 2;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .logo {
-            width: 200px;
-            height: auto;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        /* Logo no header */
+        .header .logo {
+            position: relative;
+            z-index: 10;
         }
 
+        .header .logo img {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            min-height: calc(100vh - 120px);
+        }
+
+        /* Títulos */
         .main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2em;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 10px;
-            line-height: 1.3;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-size: 36px;
+            font-weight: 400;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         .subtitle {
-            font-size: 1.1em;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 25px;
-            font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 15px;
+            text-align: left;
         }
 
-        /* Energia Predominante */
-        .energia-destaque {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 30px var(--shadow-medium);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .energia-destaque::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .energia-destaque h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5em;
+        .energy-highlight {
+            font-size: 32px;
             font-weight: 700;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            text-align: left;
         }
 
-        .energia-percentage {
-            font-size: 1.3em;
-            font-weight: 600;
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
+        /* Painel de percentuais simples */
+        .percentages-panel {
+            margin: 40px 0;
+            background: transparent;
         }
 
-        /* Painel de Percentuais */
-        .percentuais-panel {
-            background: var(--background-white);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 30px var(--shadow-light);
+        .percentage-item {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 8px;
+            padding: 5px 0;
         }
 
-        .percentuais-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5em;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .energia-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .energia-item:last-child {
-            border-bottom: none;
-        }
-
-        .energia-name {
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .energia-bar {
-            flex: 1;
-            height: 8px;
-            background: var(--border-light);
-            border-radius: 10px;
-            margin: 0 15px;
-            overflow: hidden;
-        }
-
-        .energia-fill {
-            height: 100%;
-            background: var(--gradient-primary);
-            border-radius: 10px;
-            transition: width 1.5s ease-out;
-            width: 0%;
-        }
-
-        .energia-percent {
-            font-weight: 600;
-            color: var(--primary-color);
-            min-width: 45px;
-            text-align: right;
-        }
-
-        /* Botões de Compartilhamento */
+        /* Botões */
         .share-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin: 30px 0;
+            margin: 40px 0;
             flex-wrap: wrap;
         }
 
-        .share-btn {
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 500;
-            text-decoration: none;
+            gap: 10px;
             transition: all 0.3s ease;
             cursor: pointer;
-            font-size: 0.95em;
+            font-size: 16px;
         }
 
-        .share-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--shadow-medium);
-        }
-
-        .share-btn.primary {
-            background: var(--gradient-primary);
+        .btn-share {
+            background: #25d366;
             color: white;
         }
 
-        .share-btn.secondary {
-            background: var(--background-white);
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
+        .btn-share:hover {
+            background: #128c7e;
+            transform: translateY(-2px);
+        }
+
+        .btn-pdf {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background: #c82333;
+            transform: translateY(-2px);
         }
 
         /* Vídeo */
-        .video-section {
-            background: var(--background-white);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 30px var(--shadow-light);
+        .video-container {
+            margin: 50px 0;
             text-align: center;
         }
 
-        .video-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5em;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .video-container {
+        .video-wrapper {
             position: relative;
             width: 100%;
             height: 0;
             padding-bottom: 56.25%;
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 25px var(--shadow-light);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
 
-        .video-container iframe {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
         }
 
-        /* Narrativa do Resultado */
-        .resultado-content {
-            background: var(--background-white);
+        /* Narrativa */
+        .narrative {
+            background: rgba(255, 255, 255, 0.9);
             padding: 40px;
+            margin: 40px 0;
             border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 30px var(--shadow-light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             line-height: 1.8;
         }
 
-        .resultado-content h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8em;
-            color: var(--primary-color);
+        .narrative h2 {
+            color: #2c3e50;
             margin-bottom: 25px;
+            font-size: 28px;
             font-weight: 600;
         }
 
-        .resultado-content h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4em;
-            color: var(--primary-color);
-            margin: 30px 0 15px;
-            font-weight: 600;
-        }
-
-        .resultado-content p {
+        .narrative p {
             margin-bottom: 20px;
-            color: var(--text-dark);
-            text-align: justify;
+            color: #555;
+            font-size: 16px;
         }
 
-        .resultado-content strong {
-            color: var(--primary-color);
+        .narrative strong {
+            color: #2c3e50;
             font-weight: 600;
         }
 
-        .resultado-content ul {
-            margin: 20px 0;
-            padding-left: 25px;
-        }
-
-        .resultado-content li {
-            margin-bottom: 8px;
-            color: var(--text-dark);
-        }
-
-        .resultado-content blockquote {
-            background: var(--background-light);
-            border-left: 4px solid var(--primary-color);
-            padding: 20px;
-            margin: 25px 0;
-            border-radius: 8px;
+        .narrative em {
+            color: #666;
             font-style: italic;
-            color: var(--text-light);
         }
 
-        /* Botões de Ação */
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 1em;
-            min-width: 200px;
-            justify-content: center;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px var(--shadow-medium);
-        }
-
-        .action-btn.primary {
-            background: var(--gradient-secondary);
-            color: white;
-        }
-
-        .action-btn.secondary {
-            background: var(--background-white);
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        /* Publicidade do Curso */
-        .curso-cta {
-            background: var(--gradient-primary);
-            color: white;
+        /* CTA dos cursos com imagens do GitHub */
+        .course-cta {
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            margin: 50px 0;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 8px 30px var(--shadow-medium);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 30px;
         }
 
-        .curso-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.3;
-            z-index: 1;
+        .course-image {
+            flex: 0 0 200px;
         }
 
-        .curso-cta.reprogramacao::before {
-            background-image: url('https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/O%20Ouro%20Web.jpg');
-        }
-
-        .curso-cta.atracao::before {
-            background-image: url('https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Lei%20da%20Atracao%20Editavel%20Web.jpg');
-        }
-
-        .curso-image {
-            width: 200px;
+        .course-image img {
+            width: 100%;
             height: auto;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 2;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
-        .curso-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2em;
-            font-weight: 700;
+        .course-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .course-cta h3 {
+            font-size: 28px;
             margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
+            color: #2c3e50;
         }
 
-        .curso-description {
-            font-size: 1.1em;
+        .course-cta p {
+            font-size: 18px;
             margin-bottom: 25px;
-            opacity: 0.95;
+            color: #555;
             line-height: 1.6;
-            position: relative;
-            z-index: 2;
         }
 
-        .curso-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: white;
-            color: var(--primary-color);
-            padding: 18px 35px;
-            border: none;
-            border-radius: 30px;
+        .btn-course {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 40px;
+            font-size: 18px;
             font-weight: 700;
-            font-size: 1.1em;
+            border-radius: 30px;
             text-decoration: none;
+            display: inline-block;
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 2;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
         }
 
-        .curso-btn:hover {
+        .btn-course:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+            color: white;
         }
 
-        /* Loading States */
+        /* Loading */
         .loading {
             text-align: center;
-            padding: 60px 20px;
+            padding: 100px 20px;
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--border-light);
-            border-top: 4px solid var(--primary-color);
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
             border-radius: 50%;
+            width: 60px;
+            height: 60px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 30px;
         }
 
         @keyframes spin {
@@ -537,1334 +316,696 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Error States */
+        /* Error */
         .error {
-            background: #ffebee;
-            color: #c62828;
-            padding: 20px;
-            border-radius: 10px;
+            background: rgba(248, 215, 218, 0.9);
+            color: #721c24;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 20px;
             text-align: center;
-            margin: 20px 0;
-            border-left: 4px solid #c62828;
+            backdrop-filter: blur(10px);
+        }
+
+        .hidden {
+            display: none;
         }
 
         /* Footer */
         .footer {
             text-align: center;
             padding: 40px 20px;
-            background: var(--background-white);
-            border-radius: 15px;
-            margin-top: 30px;
-            box-shadow: 0 8px 30px var(--shadow-light);
+            color: #666;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.5);
         }
 
-        .footer p {
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        .footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsividade */
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
             .header {
-                min-height: 250px;
-                padding: 15px 0 30px;
                 background-position: center top;
+                min-height: 100px;
+                padding: 20px 0;
             }
-
-            .logo {
-                width: 150px;
-                margin-bottom: 15px;
+            
+            .header .logo img {
+                height: 50px;
             }
-
+            
+            .container {
+                padding: 30px 20px;
+            }
+            
             .main-title {
-                font-size: 1.8em;
+                font-size: 28px;
             }
-
-            .subtitle {
-                font-size: 1em;
-                margin-bottom: 20px;
+            
+            .energy-highlight {
+                font-size: 24px;
             }
-
-            .energia-destaque h2 {
-                font-size: 2em;
+            
+            .course-cta {
+                flex-direction: column;
+                text-align: center;
             }
-
+            
+            .course-image {
+                flex: none;
+            }
+            
+            .course-content {
+                text-align: center;
+            }
+            
             .share-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-
-            .share-btn, .action-btn {
-                width: 100%;
-                max-width: 300px;
+            
+            .btn {
+                width: 250px;
                 justify-content: center;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .resultado-content {
-                padding: 25px;
-            }
-
-            .curso-cta {
-                padding: 30px 20px;
-            }
-
-            .curso-image {
-                width: 150px;
-                margin-bottom: 15px;
-            }
-
-            .curso-title {
-                font-size: 1.6em;
-            }
-
-            body {
-                background-attachment: scroll;
             }
         }
 
         @media (max-width: 480px) {
-            .header {
-                min-height: 200px;
-                background-position: center top;
+            body::before {
+                background-attachment: scroll;
             }
-
-            .logo {
-                width: 120px;
-                margin-bottom: 10px;
+            
+            .container {
+                padding: 20px 15px;
             }
-
+            
             .main-title {
-                font-size: 1.6em;
+                font-size: 24px;
             }
-
-            .energia-destaque h2 {
-                font-size: 1.8em;
+            
+            .course-cta {
+                padding: 30px 20px;
             }
-
-            .energia-destaque {
-                padding: 20px;
-            }
-
-            .percentuais-panel, .resultado-content {
-                padding: 20px;
-            }
-
-            .curso-image {
-                width: 120px;
-            }
-        }
-
-        /* Animações */
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .slide-up {
-            animation: slideUp 0.8s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Estados escondidos */
-        .hidden {
-            display: none;
-        }
-
-        /* Toast notifications */
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 8px 25px var(--shadow-medium);
-            z-index: 1000;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success {
-            background: var(--accent-color);
-        }
-
-        .toast.error {
-            background: #c62828;
         }
     </style>
-
-    <!-- Preload de recursos importantes -->
-    <link rel="preload" href="https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Logo%20Suellen.png" as="image">
-    <link rel="preload" href="https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Teste%20Prosperidade%20Header.jpg" as="image">
-    <link rel="preload" href="https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Suellen%20Fundo.png" as="image">
-    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" as="font" type="font/woff2" crossorigin>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading">
+    <!-- Header com imagem do GitHub -->
+    <div class="header">
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/renatoambrosi/quizresultado/main/assets/images/Logo%20Suellen.png" alt="Suellen Seragi" id="headerLogo">
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading">
         <div class="spinner"></div>
-        <p>Carregando seu resultado...</p>
+        <h3>Carregando seu resultado...</h3>
+        <p>Aguarde enquanto processamos suas respostas</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error" class="error hidden">
+        <h3>Ops! Algo deu errado</h3>
+        <p id="errorMessage">Não foi possível carregar seu resultado. Tente novamente.</p>
+        <button onclick="location.reload()" class="btn btn-share" style="margin-top: 20px;">
+            🔄 Tentar Novamente
+        </button>
     </div>
 
     <!-- Main Content -->
-    <div id="main-content" class="hidden">
-        <div class="container">
-            <!-- Header -->
-            <header class="header fade-in">
-                <img src="https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Logo%20Suellen.png" alt="Suellen Seragi" class="logo" loading="lazy">
-                <h1 class="main-title" id="dynamic-title">Resultado do Teste de Prosperidade</h1>
-                <p class="subtitle">A sua energia predominante é:</p>
-            </header>
+    <div id="content" class="container hidden">
+        <!-- Título principal -->
+        <h1 class="main-title" id="mainTitle">Resultado Teste de Prosperidade</h1>
+        
+        <!-- Subtitle -->
+        <p class="subtitle">A sua energia predominante é:</p>
 
-            <!-- Energia Predominante -->
-            <section class="energia-destaque slide-up" id="energia-destaque">
-                <h2 id="energia-nome">ENERGIA DA PROSPERIDADE</h2>
-                <div class="energia-percentage" id="energia-porcentagem">75%</div>
-            </section>
-
-            <!-- Botão Compartilhar Resultado -->
-            <div class="share-buttons">
-                <button class="share-btn primary" onclick="compartilharResultado()">
-                    <i class="fas fa-share-alt"></i>
-                    Compartilhar meu resultado
-                </button>
-            </div>
-
-            <!-- Painel de Percentuais -->
-            <section class="percentuais-panel fade-in">
-                <h3 class="percentuais-title">Distribuição das suas energias:</h3>
-                <div id="energias-list">
-                    <!-- Será preenchido dinamicamente -->
-                </div>
-            </section>
-
-            <!-- Vídeo Único -->
-            <section class="video-section slide-up">
-                <h3 class="video-title">Assista este vídeo importante para você</h3>
-                <div class="video-container">
-                    <iframe 
-                        id="youtube-video"
-                        src="about:blank" 
-                        title="Vídeo sobre Teste de Prosperidade"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        loading="lazy">
-                    </iframe>
-                </div>
-            </section>
-
-            <!-- Narrativa do Resultado -->
-            <main class="resultado-content fade-in" id="resultado-narrativa">
-                <!-- Conteúdo será carregado dinamicamente -->
-            </main>
-
-            <!-- Botões de Ação -->
-            <div class="action-buttons">
-                <button class="action-btn secondary" onclick="compartilharTeste()">
-                    <i class="fas fa-share"></i>
-                    Compartilhar este teste
-                </button>
-                <button class="action-btn secondary" onclick="gerarPDF()">
-                    <i class="fas fa-download"></i>
-                    Baixar PDF
-                </button>
-            </div>
-
-            <!-- Publicidade do Curso -->
-            <section class="curso-cta slide-up" id="curso-publicidade">
-                <!-- Conteúdo será carregado dinamicamente -->
-            </section>
-
-            <!-- Footer -->
-            <footer class="footer">
-                <p><strong>Suellen Seragi</strong> - Teste de Prosperidade</p>
-                <p>© 2024 - Todos os direitos reservados</p>
-                <p><a href="https://www.suellenseragi.com.br" target="_blank">www.suellenseragi.com.br</a></p>
-            </footer>
+        <!-- Energy Highlight -->
+        <div class="energy-highlight" id="energyHighlight">
+            Carregando...
         </div>
-    </div>
 
-    <!-- Error Screen -->
-    <div id="error-screen" class="hidden">
-        <div class="container">
-            <div class="error">
-                <h2><i class="fas fa-exclamation-triangle"></i> Erro ao carregar resultado</h2>
-                <p id="error-message">Não foi possível carregar seu resultado. Verifique o link e tente novamente.</p>
-                <button class="action-btn primary" onclick="location.reload()" style="margin-top: 20px;">
-                    <i class="fas fa-refresh"></i>
-                    Tentar novamente
-                </button>
+        <!-- Percentages Panel -->
+        <div class="percentages-panel" id="percentagesPanel">
+            <!-- Será preenchido via JavaScript -->
+        </div>
+
+        <!-- Pergunta motivacional -->
+        <p style="font-size: 20px; color: #555; margin: 40px 0 30px 0;">E agora o que devo fazer?</p>
+
+        <!-- Share Buttons -->
+        <div class="share-buttons">
+            <button onclick="shareResult()" class="btn btn-share">
+                📱 Compartilhar meu resultado
+            </button>
+            <button onclick="generatePDF()" class="btn btn-pdf">
+                📄 Baixar PDF
+            </button>
+        </div>
+
+        <!-- Video -->
+        <div class="video-container">
+            <div class="video-wrapper">
+                <iframe id="video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
             </div>
         </div>
-    </div>
 
-    <!-- Toast Container -->
-    <div id="toast-container"></div>
+        <!-- Narrative -->
+        <div class="narrative" id="narrative">
+            <!-- Conteúdo será inserido via JavaScript -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="share-buttons">
+            <button onclick="shareTest()" class="btn btn-share">
+                🎯 Compartilhar este teste
+            </button>
+        </div>
+
+        <!-- Course CTA com imagens do GitHub -->
+        <div class="course-cta" id="courseCTA">
+            <!-- Conteúdo será inserido via JavaScript -->
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>© 2024 Suellen Seragi - Teste de Prosperidade</strong></p>
+            <p>Desenvolvido com ❤️ para transformar vidas</p>
+        </div>
+    </div>
 
     <script>
-        // ===================================
-        // CONFIGURAÇÕES - ALTERE AQUI!!!
-        // ===================================
-        
+        // Configurações
         const CONFIG = {
-            API_URL: 'https://script.google.com/macros/s/AKfycbz55h1hVNQggbojYu1SXYiiYotkUKkdcEh77Zqmgt0sN55XX3lwc',
-            YOUTUBE_VIDEO_ID: 'ALTERE_AQUI_ID_DO_VIDEO', // ⚠️ ALTERE: ID do vídeo do YouTube
-            TEST_URL: 'https://quizfront.vercel.app',
-            RESULT_BASE_URL: window.location.origin + window.location.pathname,
-            
-            ENERGIAS: {
-                'Medo': { color: '#8B0000', curso: 'reprogramacao' },
-                'Desordem': { color: '#FF4500', curso: 'reprogramacao' },
-                'Validação': { color: '#4169E1', curso: 'reprogramacao' },
-                'Autossuficiência': { color: '#32CD32', curso: 'atracao' },
-                'Prosperidade': { color: '#228B22', curso: 'atracao' }
+            apiUrl: 'https://script.google.com/macros/s/AKfycbz5h1hVNQgbojYu1SXYiYotkUKkdcEh7ZqmgtOsN5XX3lwc/exec',
+            videoUrl: 'https://www.youtube.com/embed/SEU_VIDEO_ID',
+            testUrl: 'https://quizfront.vercel.app',
+            imagesPath: 'https://raw.githubusercontent.com/renatoambrosi/quizresultado/main/assets/images/'
+        };
+
+        // Dados das energias com narrativas dos documentos
+        const ENERGY_DATA = {
+            'medo': {
+                title: 'Energia do Medo',
+                course: 'ouro',
+                narrative: `
+                    <h2>ENERGIA DO MEDO</h2>
+                    <p>Muitos me falam que se sentem como se vivessem com o freio de mão puxado. Como se tivesse uma barreira invisível que impedisse de romper na vida. Pelo seu resultado no teste, você se sente assim, não é?</p>
+                    <p>Tenta avançar, tenta mudar... mas não consegue e parece que sempre tem algo dentro que sempre fala: <strong>"E se der errado?"</strong></p>
+                    <p>Você não chama isso de medo. Às vezes diz que é "bom senso", entende como ver a realidade, às vezes se convence de que é só prudência e responsabilidade. Mas no fundo, o medo está dirigindo sua vida. Silenciosamente e constantemente.</p>
+                    <p>Sabe o que é pior? Ele não chega gritando. Chega como dúvida. Como aquela sensação de que agora não é o momento. Como aquela desculpa que parece sensata, mas te prende no mesmo lugar de sempre.</p>
+                    <p><em>"Aquilo que temo me sobrevém." - Jó 3:25 (NVI)</em></p>
+                    <p>Você pode até estar vivendo uma vida sem grandes tragédias. Mas se for honesto... também não está colhendo grandes frutos, é ou não é?</p>
+                    <p>Porque o medo — mesmo disfarçado de lógica racional — rouba exatamente o que a prosperidade precisa para florescer: visão, ação e confiança.</p>
+                `
             },
-
-            CURSOS: {
-                reprogramacao: {
-                    nome: 'O Ouro da Reprogramação Mental',
-                    descricao: 'Transforme sua mente e desbloqueie todo seu potencial para uma vida próspera e realizada.',
-                    link: 'ALTERE_AQUI_LINK_CURSO_REPROGRAMACAO' // ⚠️ ALTERE: Link do curso
-                },
-                atracao: {
-                    nome: 'Lei da Atração Bíblica',
-                    descricao: 'Descubra como alinhar fé e ação para manifestar abundância em todas as áreas da sua vida.',
-                    link: 'ALTERE_AQUI_LINK_CURSO_ATRACAO' // ⚠️ ALTERE: Link do curso
-                }
+            'desordem': {
+                title: 'Energia da Desordem',
+                course: 'ouro',
+                narrative: `
+                    <h2>ENERGIA DA DESORDEM</h2>
+                    <p>A sensação é que você está sempre acelerado. Tentando resolver isso e aquilo, correndo pra não esquecer nada, ou pra não atrasar ainda mais. Sempre em dúvida se fez o bastante.</p>
+                    <p>Mas no fundo, você sabe: <strong>você não está no controle — está só apagando incêndio.</strong></p>
+                    <p>Essa é a marca da energia da desordem: <strong>Age muito, mas é pouco eficaz. Faz muito mas parece ter pouco resultado.</strong></p>
+                    <p>Sua mente não para, seu dia não rende, sua paz não chega. Você vive ocupado... mas os resultados não acompanham.</p>
+                    <p>Não é que você não tenha capacidade. Você tem. O problema é que a energia que te move é confusa, fragmentada, sem foco.</p>
+                    <p>Você age sob pressão, toma decisões reativas, e no fim das contas, tem a sensação constante de estar atrasado na própria vida, é ou não é?</p>
+                    <p><em>"Portanto, tudo deve ser feito com ordem e de maneira correta." - 1 Coríntios 14:40 (NTLH)</em></p>
+                    <p>A prosperidade até tenta se manifestar na sua vida, mas encontra um terreno instável e confuso, emocionalmente poluído e cheio de ruídos e barulho, muito barulho.</p>
+                `
+            },
+            'validacao': {
+                title: 'Energia da Validação',
+                course: 'ouro',
+                narrative: `
+                    <h2>ENERGIA DA VALIDAÇÃO</h2>
+                    <p><strong>Você cresceu com um desejo sincero:</strong> ser amado. Ser notado. Ser importante pra alguém. Mas o que encontrou foram respostas frias, repreensões constrangedoras, comparações que machucavam, e tentativas de acertar que sempre pareciam pequenas demais.</p>
+                    <p>É como se, por mais que você fizesse, nunca fosse o bastante.</p>
+                    <p>Você queria pertencer, ser apreciado. Queria ser abraçado quando errasse. Elogiado quando tentava se expressar. Queria que alguém olhasse pra você e dissesse: <strong>"Você tem valor, e é importante."</strong></p>
+                    <p>Mas isso nunca veio. Veio o contrário: O presente ignorado, a entrega que virou piada, nunca se sentiu bem-vindo, o esforço que não gerou admiração — só cobrança, o coração bom que só recebia esporro, se sentia invisível.</p>
+                    <p>E o sentimento cruel de estar sempre errado, inadequado — Pensando errado. Fazendo errado. Até quando fazia o máximo para dar seu melhor, parecia bobo aos olhos dos outros.</p>
+                    <p><em>"Mesmo que meu pai e minha mãe me abandonem, o Senhor cuidará de mim." - Salmo 27:10 (NTLH)</em></p>
+                    <p><em>"Visto que és precioso aos meus olhos, digno de honra, e eu te amo..." - Isaías 43:4 (ARA)</em></p>
+                    <p>E o que Ele vê... não é fracasso. É um coração que sempre quis acertar. Mesmo sem amor. Mesmo sem colo. Mesmo sem aplauso.</p>
+                `
+            },
+            'autossuficiencia': {
+                title: 'Energia da Autossuficiência',
+                course: 'lei',
+                narrative: `
+                    <h2>ENERGIA DA AUTOSSUFICIÊNCIA</h2>
+                    <p>Você aprendeu a se virar sozinho. Na falta de apoio, desenvolveu soluções. Na ausência de direção, criou o próprio caminho. Na dor, virou força.</p>
+                    <p>E isso não é pouca coisa. Foi o que te fez resistir quando muitos teriam parado.</p>
+                    <p>Mas agora você sente o peso de ter que ser forte o tempo todo. E no fundo, sabe que essa independência virou um escudo. Um mecanismo. Uma armadura que te protege — mas também te isola.</p>
+                    <p>A energia da autossuficiência não impede que você prospere financeiramente, mas ela faz você prosperar <strong>do jeito mais cansativo possível</strong>.</p>
+                    <p>Você tem que pensar por todos. Decidir por todos. Executar por todos. Você até tenta confiar... Mas se algo sai do controle, já pensa: "Deixa que eu resolvo".</p>
+                    <p>Você se cobra mais do que deveria, ajuda mais do que aguenta, e recebe menos do que merece. E às vezes, mesmo no meio das conquistas, sente um vazio que não faz sentido.</p>
+                    <p><em>"Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento." - Provérbios 3:5 (NVI)</em></p>
+                    <p>A verdadeira força não está em controlar tudo. Está em saber em quem você se apoia quando solta o controle: em Deus. Você não está sozinho.</p>
+                `
+            },
+            'prosperidade-1': {
+                title: 'Energia da Prosperidade',
+                course: 'ouro',
+                narrative: `
+                    <h2>ENERGIA DA PROSPERIDADE - Nível 1</h2>
+                    <p>Você está no caminho certo! O fato de ter uma porcentagem de prosperidade maior que as outras em seu resultado, já indica que uma semente poderosa foi plantada em você.</p>
+                    <p>Existe uma intuição, uma busca por algo maior, que te move. Você não se contenta com o "freio de mão puxado" e busca ativamente uma vida mais plena e sustentável.</p>
+                    <p>No entanto, é natural que, com energia de prosperidade nível 1, você ainda sinta a influência de outras energias que podem estar te segurando. Talvez o medo ainda sussurre dúvidas, a desordem traga alguma confusão, a autossuficiência te impeça de pedir ajuda, ou a busca por validação externa te desvie do seu próprio valor.</p>
+                    <p>Essa é uma fase de reconhecimento e de ajustes. Você já tem a direção, mas precisa fortalecer os passos. A prosperidade para você, é um potencial latente que precisa ser nutrido com consciência e intenção.</p>
+                    <p><em>"Porque a vereda dos justos é como a luz da aurora, que vai brilhando mais e mais até ser dia perfeito." - Provérbios 4:18 (NVI)</em></p>
+                    <p>Sua luz já começou a brilhar. O desafio agora é não permitir que os resquícios das outras energias a ofusquem.</p>
+                `
+            },
+            'prosperidade-2': {
+                title: 'Energia da Prosperidade',
+                course: 'lei',
+                narrative: `
+                    <h2>ENERGIA DA PROSPERIDADE - Nível 2</h2>
+                    <p>Você está em um ponto de virada poderoso! Com esse nível de energia da prosperidade, você já demonstrou uma capacidade notável de transcender as limitações das outras energias.</p>
+                    <p>Você não apenas vislumbra a prosperidade, mas já a experimenta de forma consistente em diversas áreas da sua vida. Há uma clareza crescente sobre o que realmente importa e uma habilidade de se alinhar com seus valores mais profundos.</p>
+                    <p>Nesse nível, as outras energias (medo, desordem, autossuficiência, validação) não te paralisam mais, mas podem surgir como "testes" e tentações, tentando desviar seu foco ou atrasar seu progresso.</p>
+                    <p>Esta é uma fase de consolidação e expansão. Você já construiu uma base sólida e agora está pronto para acelerar o seu crescimento. É como ter um mapa, conhecer melhor o destino e já ter percorrido boa parte do caminho.</p>
+                    <p><em>"Mas os que esperam no Senhor renovarão as suas forças. Voarão alto como águias; correrão e não ficarão exaustos, andarão e não se fatigarão." - Isaías 40:31 (NVI)</em></p>
+                    <p>Sua força já é grande, mas a verdadeira sabedoria está em saber quando agir e quando esperar, confiando no processo.</p>
+                `
+            },
+            'prosperidade-3': {
+                title: 'Energia da Prosperidade',
+                course: 'lei',
+                narrative: `
+                    <h2>ENERGIA DA PROSPERIDADE - Nível 3</h2>
+                    <p>Existe algo diferente em você. Não é pressa. Não é desespero. É uma firmeza interna que, mesmo quando tudo parece incerto, te mantém no eixo.</p>
+                    <p>Você já entendeu que prosperidade não é sobre ter muito, nem sobre parecer bem. É sobre estar pleno, se sentir completo. É sobre saber que está no caminho certo — mesmo quando ainda falta chão.</p>
+                    <p>Essa é a energia da prosperidade: a confiança madura de quem plantou com consciência, está regando com disciplina, e sabe esperar o tempo da colheita, descansando e confiando em Deus.</p>
+                    <p>Você já não corre atrás. Você atrai. Você constrói. Você sustenta com paz. Você vive no fluxo do rio, onde as coisas acontecem no tempo certo, sem forçar a barra. E tudo isso é real.</p>
+                    <p><em>"Bem-aventurado o homem que não anda segundo o conselho dos ímpios... Pois será como a árvore plantada junto a ribeiros de águas, a qual dá o seu fruto no seu tempo; as suas folhas não caem, e tudo quanto fizer prosperará." - Salmo 1:1-3 (ARC)</em></p>
+                    <p><strong>Parabéns por ter chegado até aqui na sua vida! Continue "combatendo o bom combate, completando a carreira, e sempre guardando a sua fé".</strong></p>
+                `
             }
         };
 
-        // Mapeamento completo: respostas para energias
-        const RESPOSTA_ENERGIA_MAP = {
-            // PERGUNTA 1 - Emergência financeira
-            "Não me surpreende, eu já esperava.": "Medo",
-            "Me viro de qualquer jeito, faço empréstimo rápido ou peço adiantamento.": "Desordem",
-            "Resolvo sozinho, não conto com ninguém para não gerar cobrança depois.": "Autossuficiência",
-            "Busco a opinião de pessoas que confio para me ajudar a decidir o melhor caminho.": "Validação",
-            "Respiro fundo e busco uma solução consciente, sem precipitação.": "Prosperidade",
-
-            // PERGUNTA 2 - Ter muito dinheiro
-            "Me assusta. Acho que atrai problemas e pessoas interesseiras.": "Medo",
-            "Me confunde. Parece que muda quem a pessoa é.": "Desordem",
-            "Penso em como administrar da forma mais eficiente.": "Autossuficiência",
-            "Finalmente conseguiria mostrar que sou capaz.": "Validação",
-            "Me dá responsabilidade. Dinheiro é uma ferramenta que precisa de propósito.": "Prosperidade",
-
-            // PERGUNTA 3 - Frases sobre dinheiro
-            "Melhor ser pobre e honesto do que rico e ganancioso.": "Medo",
-            "Dinheiro é feito pra gastar. Depois a gente corre atrás.": "Desordem",
-            "O dinheiro tem que me servir.": "Autossuficiência",
-            "Dinheiro é importante para ter o que preciso e ser visto como alguém de sucesso.": "Validação",
-            "O dinheiro revela quem a pessoa é.": "Prosperidade",
-
-            // PERGUNTA 4 - Alguém enriquece sem valores
-            "Raiva. É sempre assim: os bonzinhos só se ferram.": "Medo",
-            "Frustração. Parece que nada muda, já fiz o certo e o errado e não consegui nada.": "Desordem",
-            "Motivação, porque não existe verdade, apenas resultado.": "Autossuficiência",
-            "Se alguém consegue dessa forma, eu também posso, só que da forma certa.": "Validação",
-            "Decido estudar mais e subir do jeito certo, mas sem ingenuidade.": "Prosperidade",
-
-            // PERGUNTA 5 - Potencial de gerar renda
-            "Duvido. Às vezes acho que minha realidade não permite isso.": "Medo",
-            "Não sei nem por onde começar.": "Desordem",
-            "Tenho convicção de que, com foco e lógica, eu consigo.": "Autossuficiência",
-            "Sinto que preciso alcançar um certo nível grande para me sentir realizado e reconhecido.": "Validação",
-            "Acredito que posso crescer se alinhar propósito, sabedoria e ação.": "Prosperidade",
-
-            // PERGUNTA 6 - Conflito sério
-            "Evito conversar por medo de desagradar ou ter conflito com a pessoa.": "Medo",
-            "Falo demais ou fico no meu canto e acabo piorando a situação, sem querer.": "Desordem",
-            "Deixo pra lá e sigo em frente para os meus objetivos.": "Autossuficiência",
-            "Tento evitar confronto ou tento resolver mas fico chateado quando não consigo.": "Validação",
-            "Converso com calma, busco entender o outro lado e não ver só o meu.": "Prosperidade",
-
-            // PERGUNTA 7 - Críticas negativas
-            "Me preocupo com as consequências.": "Medo",
-            "Procuro palavras para justificar mas parece que nunca é suficiente.": "Desordem",
-            "Ignoro e mudo só se eu quiser.": "Autossuficiência",
-            "Fico com raiva e tento provar que o outro está errado a meu respeito.": "Validação",
-            "Ouço, reflito mas não me deixo abalar.": "Prosperidade",
-
-            // PERGUNTA 8 - Alguém não age como espera
-            "Me afasto para não me decepcionar novamente.": "Medo",
-            "Faço cobranças ou reclamações pra ver se a pessoa muda.": "Desordem",
-            "Desisto e resolvo não contar mais com essa pessoa pra nada.": "Autossuficiência",
-            "Fico irritado mas guardo pra mim para evitar conflitos.": "Validação",
-            "Sei que ninguém é obrigado a atender minhas expectativas.": "Prosperidade",
-
-            // PERGUNTA 9 - Novas amizades
-            "Prefiro evitar pessoas novas.": "Medo",
-            "Tenho um pouco de preguiça de fazer novos contatos.": "Desordem",
-            "Avalio se é mais uma pessoa para sugar minha energia.": "Autossuficiência",
-            "Sempre quero, mas constantemente me frustro por não conseguir me expressar como desejo.": "Validação",
-            "Acredito que as conexões têm que fluir e desenvolver naturalmente.": "Prosperidade",
-
-            // PERGUNTA 10 - Sintomas físicos inesperados
-            "Fico preocupado achando que é algo sério.": "Medo",
-            "Ignoro até que se torne urgente.": "Desordem",
-            "Procuro resolver sozinho com remédios por conta própria.": "Autossuficiência",
-            "Torço e peço para me ajudarem ao máximo porque me sinto fragilizado.": "Validação",
-            "Creio que está tudo bem, mas me cuido para garantir a boa recuperação.": "Prosperidade",
-
-            // PERGUNTA 11 - Rotina de saúde
-            "Sou extremamente zeloso.": "Medo",
-            "Até gostaria, mas acabo não ligando pra isso na correria.": "Desordem",
-            "Aprendo e faço sozinho, me cobro sempre por melhorias.": "Autossuficiência",
-            "Me dedico à saúde para me sentir bem e não falhar com minhas obrigações do dia a dia.": "Validação",
-            "Sou conectado com as necessidades do meu corpo.": "Prosperidade",
-
-            // PERGUNTA 12 - Exercícios físicos
-            "Não faço por desânimo, medo de lesões ou vergonha.": "Medo",
-            "Começo e paro diversas vezes, sempre me perdendo na rotina.": "Desordem",
-            "Sou extremamente disciplinado.": "Autossuficiência",
-            "Considero fazer mesmo não gostando, pois tenho insatisfação ou vergonha do meu corpo.": "Validação",
-            "Pratico com frequência e consciência, respeitando meus limites.": "Prosperidade",
-
-            // PERGUNTA 13 - Melhorar alimentação
-            "Fico ansioso e tento mudar, mas não consigo.": "Medo",
-            "Faço mudanças bruscas e acabo desistindo rapidamente.": "Desordem",
-            "Faço mudanças bruscas e mantenho a dieta rigorosa.": "Autossuficiência",
-            "Quando estou bem eu como bem. Mas quando fico mal eu desando.": "Validação",
-            "Faço ajustes graduais e consistentes.": "Prosperidade",
-
-            // PERGUNTA 14 - Descansar e recuperar energia
-            "Me sinto culpado ou ansioso por não estar produzindo algo.": "Medo",
-            "Tenho dificuldade em realmente descansar, a mente fica inquieta.": "Desordem",
-            "Não aviso ninguém, apenas vou descansar.": "Autossuficiência",
-            "Abro mão do descanso para cumprir minhas obrigações.": "Validação",
-            "Descanso com tranquilidade, respeitando o tempo do meu corpo e da minha mente.": "Prosperidade",
-
-            // PERGUNTA 15 - Analisar dificuldades
-            "Me conformo, porque a vida é assim.": "Medo",
-            "Me distraio fazendo várias coisas para não pensar nisso.": "Desordem",
-            "Sinto o quanto a vida não é justa.": "Autossuficiência",
-            "Costumo me sentir inútil e impotente para mudar as coisas.": "Validação",
-            "Lembro que eu sempre colho o que planto e fico em paz.": "Prosperidade",
-
-            // PERGUNTA 16 - Sensação sobre a vida
-            "A realidade é dura e nunca se sabe o que pode acontecer.": "Medo",
-            "Que nunca estou em dia com nada, sempre correndo atrás.": "Desordem",
-            "Que preciso estar sempre pronto, mesmo que cansado.": "Autossuficiência",
-            "Um sentimento controverso: sinto que não tenho valor, mas ao mesmo tempo quero provar que tenho.": "Validação",
-            "Priorizo minha paz, mesmo que o mundo caia ao meu redor.": "Prosperidade",
-
-            // PERGUNTA 17 - Perdoar alguém
-            "Fico com medo de me machucar novamente ou de ser bobo.": "Medo",
-            "Perdoo porque eu não quero carregar mais esse peso no dia a dia.": "Desordem",
-            "Eu perdoo sim, mas não tem segunda chance.": "Autossuficiência",
-            "Perdoo mesmo sendo difícil, para ficar bem aos olhos de Deus.": "Validação",
-            "Perdoo porque sei que o outro deu o melhor que tinha.": "Prosperidade",
-
-            // PERGUNTA 18 - Algo sai do controle
-            "Fico ansioso pensando nas consequências negativas.": "Medo",
-            "Me perco mentalmente, sem saber exatamente por onde recomeçar.": "Desordem",
-            "Resolvo sozinho, pois não quero depender de ninguém.": "Autossuficiência",
-            "Fico inquieto e incomodado com as coisas que me atrapalham.": "Validação",
-            "Aceito com calma e reorganizo minhas ações com clareza.": "Prosperidade",
-
-            // PERGUNTA 19 - Decisão importante
-            "Adio até o último segundo.": "Medo",
-            "Faço o que der na hora. Depois eu vejo se foi o certo.": "Desordem",
-            "Não pergunto opinião de ninguém. Eu sei lidar com isso.": "Autossuficiência",
-            "Evito contrariar pessoas ao tomar decisões.": "Validação",
-            "Coloco no papel, penso e ajo com o que tenho em mãos.": "Prosperidade",
-
-            // PERGUNTA 20 - Lidar com erros
-            "Me culpo até hoje. Aquilo nunca deveria ter acontecido.": "Medo",
-            "Evito pensar nisso. Fico mal quando lembro.": "Desordem",
-            "Não gosto que toquem nesse assunto. Eu já superei sozinho.": "Autossuficiência",
-            "Fico péssimo, me martirizando.": "Validação",
-            "Aprendi com eles. Foram parte do meu processo de amadurecimento.": "Prosperidade",
-
-            // PERGUNTA 21 - Períodos emocionalmente difíceis
-            "Me retraio, não é tempo de exposição.": "Medo",
-            "Desorganizo tudo. Depois tento arrumar.": "Desordem",
-            "Não mudo, mantenho a mesma estratégia.": "Autossuficiência",
-            "Choro muito.": "Validação",
-            "Reavalio com calma, sabendo que emoção e realidade não se misturam.": "Prosperidade",
-
-            // PERGUNTA 22 - Meta não alcançada
-            "Fico com vontade de sumir para não lidar com as consequências.": "Medo",
-            "Me incomoda, mas faço quando der.": "Desordem",
-            "Faço um plano ainda mais rígido pra compensar.": "Autossuficiência",
-            "Fico com a sensação que fracassei.": "Validação",
-            "Avalio onde errei e ajusto com calma.": "Prosperidade",
-
-            // PERGUNTA 23 - Oração e conexão espiritual
-            "Tento não falhar porque quando falho parece que o dia não é bom e as coisas dão errado.": "Medo",
-            "Minha vida é tão corrida que nem sempre consigo manter constância.": "Desordem",
-            "Gosto de me conectar no meu tempo, do meu jeito, sem depender de rituais ou grupos.": "Autossuficiência",
-            "Tento agradar a Deus mas sinto que quase nunca consigo.": "Validação",
-            "Tenho momentos de oração e conexão diária que me fortalecem e me dão direção.": "Prosperidade",
-
-            // PERGUNTA 24 - Espiritualidade funciona como
-            "Um lugar pra me esconder quando o mundo parece ameaçador.": "Medo",
-            "Um recurso que uso para ficar em paz.": "Desordem",
-            "Uma forma de encontrar minhas próprias respostas sem me expor a opiniões alheias.": "Autossuficiência",
-            "Uma forma de saber que não estou sozinho e receber direção pra minha vida.": "Validação",
-            "É a minha base, estando bem ou mal.": "Prosperidade",
-
-            // PERGUNTA 25 - Pessoa simples falando de prosperidade
-            "Acho bonito, mas duvido que dê certo assim.": "Medo",
-            "Não entendo como consegue acreditar nisso com a vida que tem.": "Desordem",
-            "A fé não basta. Se não houver método, não prospera.": "Autossuficiência",
-            "Fico com dó porque parece que está passando vergonha.": "Validação",
-            "Me inspira. Já vi milagres saindo de onde ninguém espera.": "Prosperidade",
-
-            // PERGUNTA 26 - Silêncio e espera
-            "Me agito. Sinto que estou sendo esquecido.": "Medo",
-            "Acabo desistindo. Parece que nada muda mesmo.": "Desordem",
-            "Enquanto espero, foco no que tenho em mãos.": "Autossuficiência",
-            "Mantenho a aparência de que estou bem, mesmo que internamente esteja lutando com a espera.": "Validação",
-            "Fico em paz, mesmo sem respostas imediatas.": "Prosperidade",
-
-            // PERGUNTA 27 - Fez tudo certo mas frutos não chegam
-            "Talvez eu não tenha feito direito. Como sempre...": "Medo",
-            "Perco as forças (emocionalmente). Começo a desistir por dentro.": "Desordem",
-            "Faço ajustes nos cálculos. Se não deu certo, é porque algo foi mal feito.": "Autossuficiência",
-            "Sinto que estou sendo injustiçado.": "Validação",
-            "Penso que não controlo a colheita. Só precisa de tempo para aprender a crescer.": "Prosperidade",
-
-            // PERGUNTA 28 - O que trava alinhamento com propósito
-            "O medo de que seja tarde demais --- ou que não tenha propósito nenhum na minha vida.": "Medo",
-            "A correria e obrigações do dia a dia, que sempre tomam todo meu tempo.": "Desordem",
-            "A ideia de que é inconcebível depender de pessoas falhas.": "Autossuficiência",
-            "Parece que ninguém me enxerga e esse propósito nunca vai acontecer.": "Validação",
-            "Ter que aprender a esperar tempo que leva para ter mais respostas.": "Prosperidade",
-
-            // PERGUNTA 29 - Descrever propósito
-            "Não sei ao certo... e isso me constrange mais do que eu gostaria de admitir.": "Medo",
-            "Depende do dia. Ora tenho dúvida, ora convicção.": "Desordem",
-            "Prefiro não tentar resumir. Propósito se vive, não se explica.": "Autossuficiência",
-            "Quero me sentir útil e realizada cumprindo meu propósito.": "Validação",
-            "Uma jornada mágica, que conecta quem eu sou com o que posso oferecer ao mundo.": "Prosperidade",
-
-            // PERGUNTA 30 - O que deixaria para os outros
-            "Nada muito relevante.": "Medo",
-            "Nada claro. Vivo dia após dia fazendo meu melhor.": "Desordem",
-            "Organização, instruções e legado.": "Autossuficiência",
-            "A imagem de alguém que quis acertar embora nem sempre conseguisse.": "Validação",
-            "Exemplo de fé, transformação e sementes plantadas.": "Prosperidade"
+        const COURSES = {
+            ouro: {
+                title: 'O Ouro da Reprogramação Mental',
+                description: 'Transforme sua mente e destrave sua prosperidade com ferramentas práticas e fundamentadas na fé.',
+                url: 'https://pay.hotmart.com/seu-link-ouro',
+                image: 'O%20Ouro%20Web.jpg'
+            },
+            lei: {
+                title: 'Lei da Atração Bíblica',
+                description: 'Descubra como alinhar fé e ação para atrair abundância de forma sustentável e próspera.',
+                url: 'https://pay.hotmart.com/seu-link-lei',
+                image: 'Lei%20da%20Atracao%20Editavel%20Web.jpg'
+            }
         };
 
-        // ===================================
-        // VARIÁVEIS GLOBAIS
-        // ===================================
-        
-        let dadosUsuario = null;
-        let resultadosCalculados = null;
+        // Estado global
+        let currentUID = null;
+        let currentData = null;
+        let currentResult = null;
 
-        // ===================================
-        // INICIALIZAÇÃO
-        // ===================================
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Iniciando página de resultados');
-            inicializar();
-        });
+        // Inicialização
+        window.addEventListener('DOMContentLoaded', init);
 
-        async function inicializar() {
-            try {
-                // Extrair UID da URL
-                const uid = extrairUID();
-                if (!uid) {
-                    throw new Error('UID não fornecida na URL');
-                }
-
-                console.log('🔍 UID extraída:', uid);
-
-                // Buscar dados do usuário
-                await buscarDadosUsuario(uid);
-                
-                // Calcular resultados
-                calcularResultados();
-                
-                // Renderizar página
-                renderizarPagina();
-                
-                // Configurar vídeo
-                configurarVideo();
-                
-                // Mostrar conteúdo
-                mostrarConteudo();
-
-                console.log('✅ Página carregada com sucesso');
-                
-            } catch (error) {
-                console.error('❌ Erro na inicialização:', error);
-                mostrarErro(error.message);
+        function init() {
+            currentUID = getUIDFromURL();
+            
+            if (!currentUID) {
+                showError('UID não encontrado na URL. Acesse através do link enviado por email.');
+                return;
             }
+
+            loadResult();
         }
 
-        function extrairUID() {
+        function getUIDFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('uid');
         }
 
-        async function buscarDadosUsuario(uid) {
+        async function loadResult() {
             try {
-                showToast('Carregando seus dados...', 'info');
+                showLoading();
                 
-                const response = await fetch(`${CONFIG.API_URL}?uid=${uid}`);
+                const response = await fetch(`${CONFIG.apiUrl}?uid=${currentUID}`);
                 
                 if (!response.ok) {
-                    throw new Error(`Erro na API: ${response.status}`);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
-                const dadosAPI = await response.json();
-                console.log('📥 Dados brutos da API:', dadosAPI);
-                console.log('📋 Campos disponíveis:', Object.keys(dadosAPI));
+                const data = await response.json();
                 
-                // Processar estrutura da planilha
-                if (!dadosAPI || typeof dadosAPI !== 'object') {
-                    throw new Error('Resposta inválida da API');
+                if (!data.respostas || !Array.isArray(data.respostas)) {
+                    throw new Error('Dados de resposta inválidos ou ausentes');
                 }
                 
-                // Extrair nome do campo "Qual o seu nome"
-                const nome = dadosAPI["Qual o seu nome"] || dadosAPI.nome || '';
-                console.log('👤 Nome extraído:', nome);
-                
-                // Extrair email
-                const email = dadosAPI.email || '';
-                console.log('📧 Email extraído:', email);
-                
-                // Extrair submission_id
-                const submissionId = dadosAPI.submission_id || uid;
-                console.log('🆔 Submission ID:', submissionId);
-                
-                // Extrair respostas - são todas as outras propriedades que não são metadados
-                const respostas = [];
-                const camposMetadados = ['submission_id', 'Qual o seu nome', 'email', 'timestamp', 'uid'];
-                
-                // Primeiro, vamos listar todos os campos para debug
-                console.log('🔍 Analisando campos:');
-                Object.keys(dadosAPI).forEach(chave => {
-                    console.log(`  - ${chave}: ${dadosAPI[chave]}`);
-                    
-                    if (!camposMetadados.includes(chave) && dadosAPI[chave] && dadosAPI[chave].trim() !== '') {
-                        respostas.push(dadosAPI[chave].trim());
-                    }
-                });
-                
-                console.log(`📊 Total de respostas encontradas: ${respostas.length}`);
-                console.log('📝 Primeiras 5 respostas:', respostas.slice(0, 5));
-                
-                // Validar se temos pelo menos algumas respostas
-                if (respostas.length === 0) {
-                    throw new Error('Nenhuma resposta encontrada nos dados');
+                if (data.respostas.length !== 30) {
+                    console.warn(`Esperado 30 respostas, encontrado ${data.respostas.length}`);
                 }
                 
-                if (respostas.length !== 30) {
-                    console.warn(`⚠️ Esperadas 30 respostas, encontradas: ${respostas.length}`);
-                    // Não vamos parar por isso, vamos processar o que temos
-                }
+                currentData = data;
+                currentResult = calculateResult(data.respostas);
                 
-                dadosUsuario = {
-                    nome: nome,
-                    email: email,
-                    submissionId: submissionId,
-                    respostas: respostas
-                };
-                
-                console.log('✅ Processamento concluído:', {
-                    nome: nome,
-                    email: email,
-                    totalRespostas: respostas.length
-                });
+                displayResult();
+                hideLoading();
                 
             } catch (error) {
-                console.error('❌ Erro ao buscar dados:', error);
-                throw new Error('Não foi possível carregar seus dados. Verifique o link e tente novamente.');
+                console.error('Erro ao carregar resultado:', error);
+                showError(`Não foi possível carregar seu resultado. ${error.message}`);
             }
         }
 
-        function calcularResultados() {
-            try {
-                const contadores = {
-                    'Medo': 0,
-                    'Desordem': 0,
-                    'Validação': 0,
-                    'Autossuficiência': 0,
-                    'Prosperidade': 0
-                };
-
-                let respostasValidas = 0;
-                let respostasNaoEncontradas = [];
-
-                // Contar respostas por energia usando o mapeamento correto
-                dadosUsuario.respostas.forEach((resposta, index) => {
-                    const energia = RESPOSTA_ENERGIA_MAP[resposta];
-                    
-                    if (energia) {
-                        contadores[energia]++;
-                        respostasValidas++;
-                        console.log(`✅ Pergunta ${index + 1}: "${resposta}" → ${energia}`);
-                    } else {
-                        respostasNaoEncontradas.push({
-                            pergunta: index + 1,
-                            resposta: resposta
-                        });
-                        console.warn(`⚠️ Pergunta ${index + 1}: Resposta não encontrada: "${resposta}"`);
-                        
-                        // Fallback: tentar encontrar similaridade parcial
-                        const energiaFallback = tentarFallback(resposta);
-                        if (energiaFallback) {
-                            contadores[energiaFallback]++;
-                            respostasValidas++;
-                            console.log(`🔄 Fallback aplicado para pergunta ${index + 1}: "${resposta}" → ${energiaFallback}`);
-                        }
-                    }
-                });
-
-                // Log detalhado dos resultados
-                console.log(`📊 Análise concluída:`);
-                console.log(`  ✅ Respostas válidas: ${respostasValidas}/30`);
-                console.log(`  ⚠️ Respostas não encontradas: ${respostasNaoEncontradas.length}`);
-                console.log(`  📋 Distribuição:`, contadores);
-
-                if (respostasNaoEncontradas.length > 0) {
-                    console.log(`🔍 Respostas não encontradas:`, respostasNaoEncontradas);
-                }
-
-                // Calcular percentuais (cada energia tem no máximo 6 respostas = 100%)
-                const percentuais = {};
-                Object.keys(contadores).forEach(energia => {
-                    percentuais[energia] = Math.round((contadores[energia] / 6) * 100);
-                });
-
-                // Encontrar energia predominante
-                let energiaPredominante = 'Prosperidade';
-                let maiorPercentual = 0;
-                
-                Object.keys(percentuais).forEach(energia => {
-                    if (percentuais[energia] > maiorPercentual) {
-                        maiorPercentual = percentuais[energia];
-                        energiaPredominante = energia;
-                    }
-                });
-
-                // Em caso de empate, priorizar Prosperidade
-                if (maiorPercentual === 0) {
-                    energiaPredominante = 'Prosperidade';
-                    maiorPercentual = percentuais['Prosperidade'] || 0;
-                }
-
-                // Determinar nível da Prosperidade se aplicável
-                let nivelProsperidade = null;
-                if (energiaPredominante === 'Prosperidade') {
-                    if (maiorPercentual <= 50) {
-                        nivelProsperidade = 1;
-                    } else if (maiorPercentual <= 75) {
-                        nivelProsperidade = 2;
-                    } else {
-                        nivelProsperidade = 3;
-                    }
-                }
-
-                resultadosCalculados = {
-                    contadores,
-                    percentuais,
-                    energiaPredominante,
-                    maiorPercentual,
-                    nivelProsperidade,
-                    respostasValidas,
-                    respostasNaoEncontradas,
-                    totalEsperado: 30
-                };
-
-                console.log('🎯 Resultado final:', {
-                    energiaPredominante: energiaPredominante,
-                    percentual: maiorPercentual + '%',
-                    nivel: nivelProsperidade ? `Nível ${nivelProsperidade}` : 'N/A'
-                });
-
-                console.log('📊 Percentuais finais:', percentuais);
-                
-            } catch (error) {
-                console.error('❌ Erro no cálculo:', error);
-                throw new Error('Erro ao processar resultados');
-            }
-        }
-
-        // Função auxiliar para tentar encontrar energia por similaridade
-        function tentarFallback(resposta) {
-            const palavrasChave = {
-                'Medo': ['medo', 'preocup', 'ansio', 'nervos', 'receio', 'temor', 'duvid', 'insegur'],
-                'Desordem': ['bagunç', 'confus', 'desorganiz', 'caos', 'atrapalhad', 'perdi', 'esquec', 'correria'],
-                'Validação': ['aprovação', 'reconhec', 'valid', 'aceita', 'import', 'valor', 'opinion', 'outros'],
-                'Autossuficiência': ['sozinho', 'independ', 'proprio', 'conta', 'confio', 'resolv', 'depend'],
-                'Prosperidade': ['paz', 'equilibr', 'conscien', 'sabi', 'calm', 'fluid', 'natur', 'harmoni']
+        function calculateResult(respostas) {
+            // Contadores para cada energia
+            const energias = {
+                medo: 0,
+                desordem: 0,
+                autossuficiencia: 0,
+                validacao: 0,
+                prosperidade: 0
             };
 
-            const respostaLower = resposta.toLowerCase();
-            
-            for (const [energia, palavras] of Object.entries(palavrasChave)) {
-                for (const palavra of palavras) {
-                    if (respostaLower.includes(palavra)) {
-                        return energia;
-                    }
+            // Mapeamento das respostas A, B, C, D, E para energias
+            const answerMap = {
+                'A': 'medo',
+                'B': 'desordem',
+                'C': 'autossuficiencia',
+                'D': 'validacao',
+                'E': 'prosperidade'
+            };
+
+            // Contar respostas por energia
+            respostas.forEach(resposta => {
+                const energy = answerMap[resposta.toUpperCase()];
+                if (energy && energias.hasOwnProperty(energy)) {
+                    energias[energy]++;
+                } else {
+                    console.warn(`Resposta inválida encontrada: ${resposta}`);
                 }
-            }
-            
-            return null; // Não encontrou similaridade
-        }
-
-        function renderizarPagina() {
-            try {
-                // Atualizar título personalizado
-                atualizarTitulos();
-                
-                // Renderizar energia predominante
-                renderizarEnergiaPredominante();
-                
-                // Renderizar painel de percentuais
-                renderizarPainelPercentuais();
-                
-                // Renderizar narrativa do resultado
-                renderizarNarrativa();
-                
-                // Renderizar publicidade do curso
-                renderizarCurso();
-                
-                // Atualizar meta tags
-                atualizarMetaTags();
-                
-            } catch (error) {
-                console.error('❌ Erro na renderização:', error);
-                throw new Error('Erro ao exibir resultado');
-            }
-        }
-
-        function atualizarTitulos() {
-            const nome = dadosUsuario.nome || '';
-            const tituloPersonalizado = nome 
-                ? `Resultado do Teste de Prosperidade de ${nome}`
-                : 'Resultado do Teste de Prosperidade';
-            
-            document.getElementById('dynamic-title').textContent = tituloPersonalizado;
-            document.getElementById('page-title').textContent = tituloPersonalizado;
-        }
-
-        function renderizarEnergiaPredominante() {
-            const { energiaPredominante, maiorPercentual, nivelProsperidade } = resultadosCalculados;
-            
-            let nomeEnergia = energiaPredominante.toUpperCase();
-            if (energiaPredominante === 'Prosperidade' && nivelProsperidade) {
-                nomeEnergia += ` - NÍVEL ${nivelProsperidade}`;
-            }
-            
-            document.getElementById('energia-nome').textContent = `ENERGIA DA ${nomeEnergia}`;
-            document.getElementById('energia-porcentagem').textContent = `${maiorPercentual}%`;
-            
-            // Aplicar cor da energia
-            const cor = CONFIG.ENERGIAS[energiaPredominante]?.color || '#228B22';
-            const elemento = document.getElementById('energia-destaque');
-            elemento.style.background = `linear-gradient(135deg, ${cor}, ${cor}CC)`;
-        }
-
-        function renderizarPainelPercentuais() {
-            const { percentuais } = resultadosCalculados;
-            const container = document.getElementById('energias-list');
-            
-            // Ordenar energias por percentual (decrescente)
-            const energiasOrdenadas = Object.entries(percentuais)
-                .sort(([,a], [,b]) => b - a);
-            
-            container.innerHTML = '';
-            
-            energiasOrdenadas.forEach(([energia, percentual]) => {
-                const item = document.createElement('div');
-                item.className = 'energia-item';
-                
-                const cor = CONFIG.ENERGIAS[energia]?.color || '#228B22';
-                
-                item.innerHTML = `
-                    <span class="energia-name">Energia da ${energia}</span>
-                    <div class="energia-bar">
-                        <div class="energia-fill" style="background: linear-gradient(90deg, ${cor}, ${cor}AA);"></div>
-                    </div>
-                    <span class="energia-percent">${percentual}%</span>
-                `;
-                
-                container.appendChild(item);
-                
-                // Animar barra
-                setTimeout(() => {
-                    const fill = item.querySelector('.energia-fill');
-                    fill.style.width = `${percentual}%`;
-                }, 100);
             });
-        }
 
-        function renderizarNarrativa() {
-            const { energiaPredominante, nivelProsperidade } = resultadosCalculados;
-            const container = document.getElementById('resultado-narrativa');
+            // Calcular percentuais
+            const total = respostas.length;
+            const percentages = {};
             
-            let conteudo = getConteudoEnergia(energiaPredominante, nivelProsperidade);
-            
-            container.innerHTML = conteudo;
-        }
+            Object.keys(energias).forEach(energy => {
+                percentages[energy] = total > 0 ? Math.round((energias[energy] / total) * 100) : 0;
+            });
 
-        function renderizarCurso() {
-            const { energiaPredominante, nivelProsperidade } = resultadosCalculados;
-            const container = document.getElementById('curso-publicidade');
-            
-            // Determinar qual curso mostrar
-            let tipoCurso = 'reprogramacao'; // padrão
-            
-            if (energiaPredominante === 'Autossuficiência' || 
-                (energiaPredominante === 'Prosperidade' && (nivelProsperidade === 2 || nivelProsperidade === 3))) {
-                tipoCurso = 'atracao';
+            // Encontrar energia predominante
+            let predominant = 'prosperidade';
+            let maxCount = energias.prosperidade;
+
+            Object.keys(energias).forEach(energy => {
+                if (energias[energy] > maxCount) {
+                    maxCount = energias[energy];
+                    predominant = energy;
+                }
+            });
+
+            // Determinar nível da prosperidade (se for predominante)
+            let energyKey = predominant;
+            if (predominant === 'prosperidade') {
+                const prosperidadePercent = percentages.prosperidade;
+                if (prosperidadePercent >= 75) {
+                    energyKey = 'prosperidade-3';
+                } else if (prosperidadePercent >= 50) {
+                    energyKey = 'prosperidade-2';
+                } else {
+                    energyKey = 'prosperidade-1';
+                }
             }
+
+            return {
+                percentages,
+                predominant,
+                energyKey,
+                energyData: ENERGY_DATA[energyKey],
+                counts: energias,
+                total: total
+            };
+        }
+
+        function displayResult() {
+            const { percentages, energyData } = currentResult;
+            const userName = currentData.nome || '';
             
-            const curso = CONFIG.CURSOS[tipoCurso];
+            // Atualizar título da página
+            const title = userName ? 
+                `Resultado do Teste de Prosperidade de ${userName}` : 
+                'Resultado Teste de Prosperidade';
             
-            // URLs das imagens dos cursos
-            const imagensCursos = {
-                reprogramacao: 'https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/O%20Ouro%20Web.jpg',
-                atracao: 'https://github.com/renatoambrosi/quizresultado/raw/main/assets/images/Lei%20da%20Atracao%20Editavel%20Web.jpg'
+            document.getElementById('mainTitle').textContent = title;
+            document.getElementById('pageTitle').textContent = title;
+            
+            // Atualizar meta tags para compartilhamento
+            updateMetaTags(title, energyData.title);
+            
+            // Mostrar energia predominante
+            document.getElementById('energyHighlight').textContent = energyData.title;
+            
+            // Mostrar percentuais
+            displayPercentages(percentages);
+            
+            // Carregar vídeo (substitua pela URL real)
+            document.getElementById('video').src = CONFIG.videoUrl;
+            
+            // Mostrar narrativa específica
+            document.getElementById('narrative').innerHTML = energyData.narrative;
+            
+            // Mostrar CTA do curso
+            displayCourseCTA(energyData.course);
+            
+            // Mostrar conteúdo principal
+            document.getElementById('content').classList.remove('hidden');
+        }
+
+        function displayPercentages(percentages) {
+            const panel = document.getElementById('percentagesPanel');
+            const energyLabels = {
+                prosperidade: 'Energia da Prosperidade',
+                medo: 'Energia do Medo',
+                autossuficiencia: 'Energia da Autossuficiência',
+                desordem: 'Energia da Desordem',
+                validacao: 'Energia da Validação'
             };
             
-            // Adicionar classe CSS para background específico
-            container.className = `curso-cta slide-up ${tipoCurso}`;
+            let html = '';
+            Object.entries(energyLabels).forEach(([key, label]) => {
+                const percent = percentages[key] || 0;
+                html += `<div class="percentage-item">${label}: ${percent}%</div>`;
+            });
             
-            container.innerHTML = `
-                <img src="${imagensCursos[tipoCurso]}" alt="${curso.nome}" class="curso-image">
-                <h3 class="curso-title">${curso.nome}</h3>
-                <p class="curso-description">${curso.descricao}</p>
-                <a href="${curso.link}" class="curso-btn" target="_blank">
-                    <i class="fas fa-graduation-cap"></i>
-                    Quero conhecer o curso
-                </a>
+            panel.innerHTML = html;
+        }
+
+        function displayCourseCTA(courseType) {
+            const course = COURSES[courseType];
+            if (!course) return;
+            
+            const cta = document.getElementById('courseCTA');
+            cta.innerHTML = `
+                <div class="course-image">
+                    <img src="${CONFIG.imagesPath}${course.image}" alt="${course.title}" loading="lazy">
+                </div>
+                <div class="course-content">
+                    <h3>${course.title}</h3>
+                    <p>${course.description}</p>
+                    <a href="${course.url}" class="btn-course" target="_blank" rel="noopener">
+                        ✨ Quero Transformar Minha Vida
+                    </a>
+                </div>
             `;
         }
 
-        function configurarVideo() {
-            const iframe = document.getElementById('youtube-video');
-            const videoUrl = `https://www.youtube.com/embed/${CONFIG.YOUTUBE_VIDEO_ID}?rel=0&showinfo=0&autoplay=0`;
-            iframe.src = videoUrl;
-        }
-
-        function mostrarConteudo() {
-            document.getElementById('loading-screen').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
+        function updateMetaTags(title, energyTitle) {
+            const description = `Descubra como a ${energyTitle} influencia sua vida e como transformar seus resultados.`;
+            const url = window.location.href;
             
-            // Adicionar animações escalonadas
-            const elementos = document.querySelectorAll('.fade-in, .slide-up');
-            elementos.forEach((el, index) => {
-                setTimeout(() => {
-                    el.style.animationDelay = `${index * 0.1}s`;
-                }, 50);
-            });
-        }
-
-        function mostrarErro(mensagem) {
-            document.getElementById('loading-screen').classList.add('hidden');
-            document.getElementById('error-message').textContent = mensagem;
-            document.getElementById('error-screen').classList.remove('hidden');
-        }
-
-        function atualizarMetaTags() {
-            const { energiaPredominante } = resultadosCalculados;
-            const nome = dadosUsuario.nome || '';
+            document.getElementById('pageDescription').content = description;
+            document.getElementById('ogTitle').content = title;
+            document.getElementById('ogDescription').content = description;
             
-            const titulo = nome 
-                ? `${nome} descobriu sua Energia da ${energiaPredominante}!`
-                : `Descubra sua energia predominante - Teste de Prosperidade`;
-            
-            const descricao = `Resultado: Energia da ${energiaPredominante}. Faça o teste e descubra qual energia predomina em sua vida!`;
-            
-            // Atualizar meta tags
-            document.getElementById('og-title').content = titulo;
-            document.getElementById('og-description').content = descricao;
-            document.getElementById('twitter-title').content = titulo;
-            document.getElementById('twitter-description').content = descricao;
-            
-            // Atualizar URL
-            const currentUrl = window.location.href;
-            document.getElementById('og-url').content = currentUrl;
-        }
-
-        // ===================================
-        // FUNÇÕES DE COMPARTILHAMENTO
-        // ===================================
-        
-        async function compartilharResultado() {
-            const { energiaPredominante, maiorPercentual } = resultadosCalculados;
-            const nome = dadosUsuario.nome || 'Alguém especial';
-            const currentUrl = window.location.href;
-            
-            const texto = `🌟 ${nome} descobriu sua energia predominante: ${energiaPredominante} (${maiorPercentual}%)!\n\n✨ Veja o resultado completo aqui: ${currentUrl}\n\n🔮 Faça você também o Teste de Prosperidade: ${CONFIG.TEST_URL}`;
-            
-            await compartilhar(texto, currentUrl, 'Meu Resultado - Teste de Prosperidade');
-        }
-
-        async function compartilharTeste() {
-            const texto = `🔮 Descubra qual energia predomina em sua vida!\n\n✨ Faça o Teste de Prosperidade gratuito e receba seu resultado personalizado.\n\n🌟 Acesse agora: ${CONFIG.TEST_URL}`;
-            
-            await compartilhar(texto, CONFIG.TEST_URL, 'Teste de Prosperidade');
-        }
-
-        async function compartilhar(texto, url, titulo) {
-            try {
-                // Tentar Web Share API primeiro (móvel)
-                if (navigator.share) {
-                    await navigator.share({
-                        title: titulo,
-                        text: texto,
-                        url: url
-                    });
-                    showToast('Compartilhado com sucesso!', 'success');
-                    return;
-                }
-                
-                // Fallback para WhatsApp
-                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-                window.open(whatsappUrl, '_blank');
-                showToast('Redirecionando para WhatsApp...', 'info');
-                
-            } catch (error) {
-                console.error('Erro ao compartilhar:', error);
-                
-                // Fallback: copiar para clipboard
-                try {
-                    await navigator.clipboard.writeText(texto);
-                    showToast('Texto copiado! Cole onde desejar.', 'success');
-                } catch (clipboardError) {
-                    showToast('Erro ao compartilhar. Tente novamente.', 'error');
-                }
+            // Atualizar URL do Open Graph se o elemento existir
+            const ogUrl = document.getElementById('ogUrl');
+            if (ogUrl) {
+                ogUrl.content = url;
             }
         }
 
-        // ===================================
-        // GERAÇÃO DE PDF
-        // ===================================
-        
-        async function gerarPDF() {
+        // Funções de compartilhamento
+        async function shareResult() {
+            const userName = currentData.nome || 'Alguém especial';
+            const energyTitle = currentResult.energyData.title;
+            const url = window.location.href;
+            
+            const text = `🎯 ${userName} descobriu sua energia predominante: ${energyTitle}!\n\nFaça você também o Teste de Prosperidade e descubra qual energia move sua vida.\n\n✨ Meu resultado: ${url}\n🎯 Fazer o teste: ${CONFIG.testUrl}`;
+            
+            if (navigator.share && navigator.canShare && navigator.canShare({ text, url })) {
+                try {
+                    await navigator.share({
+                        title: 'Meu Resultado - Teste de Prosperidade',
+                        text: text,
+                        url: url
+                    });
+                    return;
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.log('Erro no Web Share API:', err);
+                    }
+                }
+            }
+            
+            // Fallback para WhatsApp
+            shareWhatsApp(text);
+        }
+
+        async function shareTest() {
+            const text = `🎯 Descubra qual energia move sua vida!\n\nFiz o Teste de Prosperidade e foi revelador. Recomendo muito!\n\n✨ Faça você também: ${CONFIG.testUrl}`;
+            
+            if (navigator.share && navigator.canShare && navigator.canShare({ text, url: CONFIG.testUrl })) {
+                try {
+                    await navigator.share({
+                        title: 'Teste de Prosperidade',
+                        text: text,
+                        url: CONFIG.testUrl
+                    });
+                    return;
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.log('Erro no Web Share API:', err);
+                    }
+                }
+            }
+            
+            // Fallback para WhatsApp
+            shareWhatsApp(text);
+        }
+
+        function shareWhatsApp(text) {
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        // Geração de PDF
+        function generatePDF() {
+            if (!window.jsPDF) {
+                alert('Erro ao carregar gerador de PDF. Recarregue a página e tente novamente.');
+                return;
+            }
+
             try {
-                showToast('Gerando PDF...', 'info');
+                const { jsPDF } = window.jsPDF;
+                const doc = new jsPDF();
                 
-                // Implementar geração de PDF aqui
-                // Por enquanto, um placeholder
+                const userName = currentData.nome || 'Participante';
+                const energyTitle = currentResult.energyData.title;
+                const { percentages, counts, total } = currentResult;
                 
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                showToast('PDF gerado com sucesso!', 'success');
+                // Cabeçalho
+                doc.setFontSize(20);
+                doc.setFont(undefined, 'bold');
+                doc.text('Resultado do Teste de Prosperidade', 20, 30);
+                
+                // Nome do usuário
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'normal');
+                doc.text(userName, 20, 45);
+                
+                // Informações do teste
+                doc.setFontSize(10);
+                doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, 20, 55);
+                doc.text(`UID: ${currentUID}`, 20, 62);
+                doc.text(`Total de respostas: ${total}`, 20, 69);
+                
+                // Energia predominante
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Energia Predominante:', 20, 85);
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'normal');
+                doc.text(energyTitle, 20, 95);
+                
+                // Distribuição das energias
+                doc.setFont(undefined, 'bold');
+                doc.text('Distribuição das Energias:', 20, 115);
+                doc.setFont(undefined, 'normal');
+                
+                let yPos = 125;
+                const energyLabels = {
+                    prosperidade: 'Energia da Prosperidade',
+                    medo: 'Energia do Medo',
+                    autossuficiencia: 'Energia da Autossuficiência',
+                    desordem: 'Energia da Desordem',
+                    validacao: 'Energia da Validação'
+                };
+                
+                Object.entries(energyLabels).forEach(([key, label]) => {
+                    const percent = percentages[key] || 0;
+                    const count = counts[key] || 0;
+                    doc.text(`${label}: ${percent}% (${count}/${total})`, 25, yPos);
+                    yPos += 8;
+                });
+                
+                // URLs
+                doc.setFontSize(10);
+                doc.text('Acesse seu resultado online:', 20, 200);
+                doc.text(window.location.href, 20, 208);
+                
+                doc.text('Compartilhe o teste:', 20, 220);
+                doc.text(CONFIG.testUrl, 20, 228);
+                
+                // Rodapé
+                doc.text('© 2024 Suellen Seragi - Teste de Prosperidade', 20, 280);
+                
+                // Salvar arquivo
+                const fileName = `resultado-prosperidade-${userName.replace(/\s+/g, '-').toLowerCase()}-${currentUID}.pdf`;
+                doc.save(fileName);
                 
             } catch (error) {
                 console.error('Erro ao gerar PDF:', error);
-                showToast('Erro ao gerar PDF. Tente novamente.', 'error');
+                alert('Erro ao gerar PDF. Verifique sua conexão e tente novamente.');
             }
         }
 
-        // ===================================
-        // UTILITÁRIOS
-        // ===================================
-        
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            container.appendChild(toast);
-            
-            // Mostrar
-            setTimeout(() => toast.classList.add('show'), 100);
-            
-            // Remover após 3 segundos
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => container.removeChild(toast), 300);
-            }, 3000);
+        // Estados de loading e erro
+        function showLoading() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('content').classList.add('hidden');
+            document.getElementById('error').classList.add('hidden');
         }
 
-        function getConteudoEnergia(energia, nivel = null) {
-            const conteudos = {
-                'Medo': `
-                    <h3>ENERGIA DO MEDO</h3>
-                    
-                    <p>Muitos me falam que se sentem como se vivessem com o freio de mão puxado. Como se tivesse uma barreira invisível que impedisse de romper na vida. Pelo seu resultado no teste, você se sente assim, não é?</p>
-                    
-                    <p>Tenta avançar, tenta mudar... mas não consegue e parece que sempre tem algo dentro que sempre fala:</p>
-                    
-                    <p><strong>"E se der errado?"</strong></p>
-                    
-                    <p>Você não chama isso de medo. Às vezes diz que é "bom senso", entende como ver a realidade, às vezes se convence de que é só prudência e responsabilidade. Mas no fundo, o medo está dirigindo sua vida. Silenciosamente e constantemente.</p>
-                    
-                    <p>Sabe o que é pior? Ele não chega gritando. Chega como dúvida.</p>
-                    
-                    <p>Como aquela sensação de que agora não é o momento. Como aquela desculpa que parece sensata, mas te prende no mesmo lugar de sempre.</p>
-                    
-                    <blockquote>"Aquilo que temo me sobrevém." - Jó 3:25 (NVI)</blockquote>
-                    
-                    <p>Você pode até estar vivendo uma vida sem grandes tragédias. Mas se for honesto... também não está colhendo grandes frutos, é ou não é?</p>
-                    
-                    <p>Porque o medo — mesmo disfarçado de lógica racional — rouba exatamente o que a prosperidade precisa para florescer: visão, ação e confiança.</p>
-                    
-                    <h4>Onde isso te levou?</h4>
-                    
-                    <p>Você aprendeu a viver no modo sobrevivência. Evita risco, evita conflito, evita desconforto.</p>
-                    
-                    <p>Mas, junto com tudo isso, sabe o que também está inconscientemente evitando? Eu te falo:</p>
-                    
-                    <ul>
-                        <li>Crescimento</li>
-                        <li>Conexões reais</li>
-                        <li>Decisões ousadas</li>
-                        <li>E o tipo de vida que você sente que nasceu pra viver</li>
-                    </ul>
-                    
-                    <p>É como se existisse uma versão sua pronta pra avançar, mas mantida em silêncio por uma programação antiga.</p>
-                    
-                    <h4>Isso tem jeito?</h4>
-                    
-                    <p>Tem. Mas não começa mudando o mundo lá fora. Começa quando você <strong>para de se identificar com o medo</strong> e entende: ele é um visitante, não o dono da casa.</p>
-                    
-                    <blockquote>"Pois Deus não nos deu espírito de medo, mas de poder, amor e equilíbrio." - 2 Timóteo 1:7 (NVI)</blockquote>
-                    
-                    <p>Você não precisa sentir coragem pra agir. Mas precisa agir com fé até que a coragem se torne seu novo normal.</p>
-                `,
-                
-                'Desordem': `
-                    <h3>ENERGIA DA DESORDEM</h3>
-                    
-                    <p>A sensação é que você está sempre acelerado. Tentando resolver isso e aquilo, correndo pra não esquecer nada, ou pra não atrasar ainda mais. Sempre em dúvida se fez o bastante.</p>
-                    
-                    <p>Mas no fundo, você sabe: <strong>você não está no controle — está só apagando incêndio.</strong></p>
-                    
-                    <p>Essa é a marca da energia da desordem: <strong>Age muito, mas é pouco eficaz. Faz muito mas parece ter pouco resultado.</strong></p>
-                    
-                    <p>Sua mente não para, seu dia não rende, sua paz não chega. Você vive ocupado... mas os resultados não acompanham.</p>
-                    
-                    <p>Não é que você não tenha capacidade. Você tem. O problema é que a energia que te move é confusa, fragmentada, sem foco.</p>
-                    
-                    <h4>Onde isso te levou?</h4>
-                    
-                    <p>Desordem não é só bagunça externa (embora às vezes reflita nisso também). É um reflexo da forma como você lida com sua própria energia.</p>
-                    
-                    <p>Quando você está desconectado da sua essência, sua rotina vira uma resposta automática ao caos.</p>
-                    
-                    <p>Você vive respondendo urgências — mas nunca toca naquilo que <strong>realmente importa</strong>.</p>
-                    
-                    <p>E aí surgem os sintomas:</p>
-                    <ul>
-                        <li>Cansaço que não passa</li>
-                        <li>Falta de clareza sobre o que é prioridade</li>
-                        <li>Sensação de desperdício de tempo e de potencial</li>
-                        <li>Relações tensas, pendências acumuladas</li>
-                    </ul>
-                    
-                    <p>A prosperidade até tenta se manifestar na sua vida, mas encontra um terreno instável e confuso, emocionalmente poluído e cheio de ruídos e barulho, muito barulho.</p>
-                    
-                    <h4>Isso tem solução?</h4>
-                    
-                    <p>Tem. Mas começa com uma escolha: <strong>Parar de confundir agitação com progresso.</strong></p>
-                    
-                    <blockquote>"Portanto, tudo deve ser feito com ordem e de maneira correta." - 1 Coríntios 14:40 (NTLH)</blockquote>
-                    
-                    <p>A desordem externa começa a se resolver quando você reestabelece sua ordem interna: decidir o que vale a pena, o que fica, o que sai, o que é prioridade, o que te guia.</p>
-                    
-                    <p>Prosperidade precisa de espaço na sua mente. Ela não se manifesta em ambientes congestionados, nem em mentes atoladas e confusas.</p>
-                    
-                    <p>Você não precisa fazer mais. Precisa <strong>fazer menos, com mais consciência.</strong></p>
-                `,
-                
-                'Validação': `
-                    <h3>ENERGIA DA VALIDAÇÃO</h3>
-                    
-                    <p><strong>Você cresceu com um desejo sincero:</strong> ser amado. Ser notado. Ser importante pra alguém. Mas o que encontrou foram respostas frias, repreensões constrangedoras, comparações que machucavam, e tentativas de acertar que sempre pareciam pequenas demais.</p>
-                    
-                    <p>É como se, por mais que você fizesse, nunca fosse o bastante.</p>
-                    
-                    <p>Você queria pertencer, ser apreciado. Queria ser abraçado quando errasse. Elogiado quando tentava se expressar. Queria que alguém olhasse pra você e dissesse: <strong>"Você tem valor, e é importante."</strong></p>
-                    
-                    <p>Mas isso nunca veio. Veio o contrário:</p>
-                    
-                    <ul>
-                        <li>O presente ignorado</li>
-                        <li>A entrega que virou piada</li>
-                        <li>Nunca se sentiu bem-vindo</li>
-                        <li>O esforço que não gerou admiração — só cobrança</li>
-                        <li>O coração bom que só recebia esporro</li>
-                        <li>Se sentia invisível</li>
-                        <li>E o sentimento cruel de estar sempre errado, inadequado</li>
-                    </ul>
-                    
-                    <h4>Onde isso te levou?</h4>
-                    
-                    <p>Com o tempo você tentou esconder sua dor e deixar de ser vulnerável (para se blindar de rejeição). Mas a realidade é que por dentro você estava chorando, e com frequência chorava por fora também.</p>
-                    
-                    <p>Você passou a viver por um ideal silencioso:</p>
-                    <ul>
-                        <li>"Preciso mostrar que tenho valor."</li>
-                        <li>"Preciso deixar de ser um fracasso."</li>
-                        <li>"Sei que tenho potencial e preciso mostrar."</li>
-                    </ul>
-                    
-                    <p>Mas esse dia nunca chegava. Você viveu fases boas, achou que agora ia... mas logo voltava tudo pro mesmo ciclo: a sensação de ser ignorado, a comparação que irrita, a vergonha de sonhar alto e ouvir que era "ilusão".</p>
-                    
-                    <h4>E por que isso acontece?</h4>
-                    
-                    <p>Porque em algum momento — na infância, na escola, nos relacionamentos — <strong>algo faltou dentro de você: a convicção de que tem valor só por existir.</strong></p>
-                    
-                    <p>Você passou a acreditar que precisava se provar o tempo todo, para você e para outros. E quando falhava, isso era como uma confirmação de que você era aquilo tudo que se repetia dentro da sua cabeça.</p>
-                    
-                    <h4>Isso tem solução?</h4>
-                    
-                    <p>Tem. Mas não com mais esforço. Não tentando agradar de novo. Não tentando provar mais uma vez o seu valor.</p>
-                    
-                    <p><strong>Rejeição não se cura com desempenho. Se cura com verdade.</strong> Com saber quem você é e que seu valor independe de qualquer coisa ou pessoa. Seu valor vem de Deus.</p>
-                    
-                    <blockquote>"Mesmo que meu pai e minha mãe me abandonem, o Senhor cuidará de mim." - Salmo 27:10 (NTLH)</blockquote>
-                    
-                    <blockquote>"Visto que és precioso aos meus olhos, digno de honra, e eu te amo..." - Isaías 43:4 (ARA)</blockquote>
-                    
-                    <p>E o que Ele vê... não é fracasso. É um coração que sempre quis acertar. Mesmo sem amor. Mesmo sem colo. Mesmo sem aplauso.</p>
-                `,
-                
-                'Autossuficiência': `
-                    <h3>ENERGIA DA AUTOSSUFICIÊNCIA</h3>
-                    
-                    <p>Você aprendeu a se virar sozinho. Na falta de apoio, desenvolveu soluções. Na ausência de direção, criou o próprio caminho. Na dor, virou força.</p>
-                    
-                    <p>E isso não é pouca coisa. Foi o que te fez resistir quando muitos teriam parado.</p>
-                    
-                    <p>Mas agora você sente o peso de ter que ser forte o tempo todo. E no fundo, sabe que essa independência virou um escudo. Um mecanismo. Uma armadura que te protege — mas também te isola.</p>
-                    
-                    <h4>Onde isso te levou?</h4>
-                    
-                    <p>A energia da autossuficiência não impede que você prospere financeiramente. Mas ela faz você prosperar <strong>do jeito mais cansativo possível</strong>.</p>
-                    
-                    <p>Você tem que pensar por todos. Decidir por todos. Executar por todos.</p>
-                    
-                    <p>Você até tenta confiar... Mas se algo sai do controle, já pensa: "Deixa que eu resolvo".</p>
-                    
-                    <p>Você se cobra mais do que deveria, ajuda mais do que aguenta, e recebe menos do que merece.</p>
-                    
-                    <p>E às vezes, mesmo no meio das conquistas, sente um vazio que não faz sentido. Porque o fardo está pesado demais pra alguém que aprendeu a não pedir ajuda.</p>
-                    
-                    <h4>Qual é a raiz?</h4>
-                    
-                    <p>Autossuficiência é uma defesa. Ela nasce quando você entende que contar com os outros <strong>é arriscado demais</strong>.</p>
-                    
-                    <p>Talvez já tenha sido decepcionado, traído ou esquecido. Ou então teve que amadurecer cedo, assumir responsabilidades que não eram suas.</p>
-                    
-                    <p>E ali, você tomou uma decisão silenciosa: <strong>"Eu vou dar conta. Nem que seja sozinho."</strong></p>
-                    
-                    <p>E deu. Mas agora precisa desaprender. Não o que você construiu — mas o jeito como você tenta sustentar tudo sozinho.</p>
-                    
-                    <h4>Isso tem solução?</h4>
-                    
-                    <p>Tem. Mas exige coragem. <strong>A coragem de baixar a guarda.</strong></p>
-                    
-                    <p>Você não foi criado pra carregar o mundo nas costas. Você foi criado pra fluir com leveza, direção e sabedoria.</p>
-                    
-                    <blockquote>"Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento." - Provérbios 3:5 (NVI)</blockquote>
-                    
-                    <p>A verdadeira força não está em controlar tudo. Está em saber <strong>em quem você se apoia quando solta o controle: em Deus. Você não está sozinho.</strong></p>
-                `,
-                
-                'Prosperidade': `
-                    <h3>ENERGIA DA PROSPERIDADE${nivel ? ` - NÍVEL ${nivel}` : ''}</h3>
-                    
-                    ${nivel === 1 ? `
-                        <p>Você está no caminho certo! O fato de ter uma porcentagem de prosperidade maior que as outras em seu resultado, já indica que uma semente poderosa foi plantada em você. Existe uma intuição, uma busca por algo maior, que te move.</p>
-                        
-                        <p>No entanto, é natural que, com energia de prosperidade nível 1, você ainda sinta a influência de outras energias que podem estar te segurando. Talvez o medo ainda sussurre dúvidas, a desordem traga alguma confusão, a autossuficiência te impeça de pedir ajuda, ou a busca por validação externa te desvie do seu próprio valor.</p>
-                        
-                        <p>Essa é uma fase de reconhecimento e de ajustes. Você já tem a direção, mas precisa fortalecer os passos. A prosperidade para você, é um potencial latente que precisa ser nutrido com consciência e intenção.</p>
-                        
-                        <blockquote>"Porque a vereda dos justos é como a luz da aurora, que vai brilhando mais e mais até ser dia perfeito." - Provérbios 4:18 (NVI)</blockquote>
-                        
-                        <p>Sua luz já começou a brilhar. O desafio agora é não permitir que os resquícios das outras energias a ofusquem.</p>
-                    ` : nivel === 2 ? `
-                        <p>Você está em um ponto de virada poderoso! Com esse nível de energia da prosperidade, você já demonstrou uma capacidade notável de transcender as limitações das outras energias. Você não apenas vislumbra a prosperidade, mas já a experimenta de forma consistente em diversas áreas da sua vida.</p>
-                        
-                        <p>Nesse nível, as outras energias (medo, desordem, autossuficiência, validação) não te paralisam mais, mas podem surgir como "testes" e tentações, tentando desviar seu foco ou atrasar seu progresso.</p>
-                        
-                        <p>Esta é uma fase de consolidação e expansão. Você já construiu uma base sólida e agora está pronto para acelerar o seu crescimento.</p>
-                        
-                        <blockquote>"Mas os que esperam no Senhor renovarão as suas forças. Voarão alto como águias; correrão e não ficarão exaustos, andarão e não se fatigarão." - Isaías 40:31 (NVI)</blockquote>
-                        
-                        <p>Sua força já é grande, mas a verdadeira sabedoria está em saber quando agir e quando esperar, confiando no processo.</p>
-                    ` : `
-                        <p>Existe algo diferente em você. Não é pressa. Não é desespero. É uma firmeza interna que, mesmo quando tudo parece incerto, te mantém no eixo. Você já entendeu que prosperidade não é sobre ter muito, nem sobre parecer bem. É sobre estar pleno, se sentir completo.</p>
-                        
-                        <p>É sobre saber que está no caminho certo — mesmo quando ainda falta chão. Essa é a energia da prosperidade: a confiança madura de quem plantou com consciência, está regando com disciplina, e sabe esperar o tempo da colheita, descansando e confiando em Deus.</p>
-                        
-                        <p>O que essa energia já te trouxe:</p>
-                        <ul>
-                            <li>Clareza sobre o que importa</li>
-                            <li>Paz nas decisões</li>
-                            <li>Autonomia emocional</li>
-                            <li>Um senso de valor que não depende de validação externa</li>
-                            <li>E uma relação cada vez mais saudável com o dinheiro, com as pessoas, com o próprio sucesso</li>
-                        </ul>
-                        
-                        <p>Você já não corre atrás. Você atrai. Você constrói. Você sustenta com paz. Você vive no fluxo do rio, onde as coisas acontecem no tempo certo, sem forçar a barra.</p>
-                        
-                        <blockquote>"Bem-aventurado o homem que não anda segundo o conselho dos ímpios, nem se detém no caminho dos pecadores, nem se assenta na roda dos escarnecedores. Antes tem o seu prazer na lei do Senhor, e na sua lei medita de dia e de noite. Pois será como a árvore plantada junto a ribeiros de águas, a qual dá o seu fruto no seu tempo; as suas folhas não caem, e tudo quanto fizer prosperará." - Salmo 1:1-3 (ARC)</blockquote>
-                        
-                        <p>Para você, não vou recomendar nenhum curso específico. Como o mestre disse, "ide e fazei discípulos". Enquanto cumpre seu propósito de vida, e serve a Deus com todo o seu melhor, não deixe de ensinar o que você sabe.</p>
-                    `}
-                `
-            };
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.add('hidden');
+        }
+
+        // Tratamento de erros de imagem
+        document.getElementById('headerLogo').addEventListener('error', function() {
+            console.warn('Erro ao carregar logo do header');
+            this.style.display = 'none';
+        });
+
+        // Otimização para performance
+        window.addEventListener('load', function() {
+            // Preload das imagens dos cursos
+            const courseImages = [
+                CONFIG.imagesPath + 'O%20Ouro%20Web.jpg',
+                CONFIG.imagesPath + 'Lei%20da%20Atracao%20Editavel%20Web.jpg'
+            ];
             
-            return conteudos[energia] || conteudos['Prosperidade'];
-        }
-
-        // ===================================
-        // ANALYTICS E TRACKING
-        // ===================================
-        
-        function trackEvent(action, category = 'Resultado', label = '') {
-            // Implementar tracking aqui (Google Analytics, etc.)
-            console.log('📊 Event tracked:', { action, category, label });
-        }
-
-        // Track visualização da página
+            courseImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        });
+    </script>
+</body>
+</html>
